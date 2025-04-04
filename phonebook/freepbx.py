@@ -15,8 +15,17 @@ class FreePBXPhonebook:
 
     def phonebook(self):
         result = {}
+
+        # get actual extensions
         with self.db.cursor() as cur:
             cur.execute("SELECT extension, name FROM users;")
             for ext, name in cur:
                 result[str(ext)] = name
+
+        # get group calls (aka "ring groups")
+        with self.db.cursor() as cur:
+            cur.execute("SELECT grpnum, description FROM ringgroups;")
+            for ext, name in cur:
+                result[str(ext)] = name
+
         return result

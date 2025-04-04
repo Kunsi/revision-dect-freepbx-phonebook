@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Revision Phonebook</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    </head>
+    <body>
+        <div class="container">
+        <h1 class="text-center">Revision DECT Phonebook</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+{% for number, name in fpbx.items() %}
+{%  if omm.get(number, {}).get('is_subscribed', True) or force_display_all %}
+{%   if not omm.get(number, {}).get('is_active', True) %}
+                <tr class="text-muted">
+                    <td><span title="Phone currently not registered in network">📵</span> {{ number }}</td>
+{%   else %}
+                <tr>
+                    <td>{{ number }}</td>
+{%   endif %}
+                    <td>{{ name }}</td>
+                </tr>
+{%  endif %}
+{% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </body>
+</html>

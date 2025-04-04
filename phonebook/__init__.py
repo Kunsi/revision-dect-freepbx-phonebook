@@ -25,6 +25,15 @@ def phonebook_html():
     )
 
 
+@app.route("/phonebook.xml")
+def phonebook_xml():
+    return render_template(
+        "phonebook.xml",
+        fpbx=fpbx.phonebook(),
+        omm=_omm_pp_list(),
+    )
+
+
 @app.route("/freepbx.json")
 def phonebook_freepbx():
     return jsonify(fpbx.phonebook())

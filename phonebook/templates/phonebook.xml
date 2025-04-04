@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AddressBook>
-{% for number, name in fpbx.items() %}
+{% for number, name in fpbx.items()|sort %}
 {%  if omm.get(number, {}).get('is_subscribed', True) %}
     <Contact>
         <LastName></LastName>

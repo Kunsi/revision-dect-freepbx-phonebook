@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-{% for number, name in fpbx.items() %}
+{% for number, name in fpbx.items()|sort %}
 {%  if omm.get(number, {}).get('is_subscribed', True) or force_display_all %}
 {%   if not omm.get(number, {}).get('is_active', True) %}
                 <tr class="text-muted">

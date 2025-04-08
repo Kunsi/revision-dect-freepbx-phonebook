@@ -31,6 +31,7 @@ class UffdLDAPRequestHandler(ldapserver.LDAPRequestHandler):
         return True
 
     def do_search(self, baseobj, scope, filterobj):
+        yield from super().do_search(baseobj, scope, filterobj)
         yield from self.do_search_static()
         yield from self.do_search_users(baseobj, scope, filterobj)
 

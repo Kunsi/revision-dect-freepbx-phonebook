@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import logging
 import socketserver
 
 import ldapserver
@@ -12,6 +13,8 @@ from ldapserver.schema import RFC2307BIS_SCHEMA, RFC2798_SCHEMA
 
 from phonebook.freepbx import freepbx_phonebook
 from phonebook.omm import omm_pp_list
+
+logging.basicConfig(level=logging.INFO)
 
 BASE_DN = "dc=revison"
 
@@ -72,8 +75,10 @@ class UffdLDAPRequestHandler(ldapserver.LDAPRequestHandler):
 
         omm = omm_pp_list()
         fpbx = freepbx_phonebook()
+        logging.info(f"Have {len(fpbx)} users in FreePBX and {len(omm)} users in OMM")
         for nbr, name in fpbx.items():
             if omm.get(nbr, {}).get("is_active", True):
+                logging.info(f"User {name!r} with number {nbr} is active")
                 yield template.create_entry(
                     nbr,
                     cn=[name],
@@ -98,5 +103,5 @@ def make_requesthandler():
 
 if __name__ == "__main__":
     RequestHandler = make_requesthandler()
-    server = socketserver.ThreadingTCPServer(("0.0.0.0", 389), RequestHandler)
+    server = socketserver.ThreadingTCPServer(("0.0.0.0", 3389), RequestHandler)
     server.serve_forever()

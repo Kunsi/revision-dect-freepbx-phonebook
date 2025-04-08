@@ -7,30 +7,48 @@
     </head>
     <body>
         <div class="container">
-        <h1 class="text-center">Revision DECT Phonebook</h1>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Number</th>
-                    <th>Name</th>
-                </tr>
-            </thead>
-            <tbody>
+            <h1 class="text-center">Revision DECT Phonebook</h1>
+            <p><input type="text" id="searchterm" onkeyup="search_the_table()" class="form-control" placeholder="Search ..."></p>
+            <table class="table table-striped" id="phonebook_table">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
 {% for number, name in fpbx.items()|sort %}
 {%  if omm.get(number, {}).get('is_subscribed', True) or force_display_all %}
 {%   if not omm.get(number, {}).get('is_active', True) %}
-                <tr class="text-muted">
-                    <td><span title="Phone currently not registered in network">📵</span> {{ number }}</td>
+                    <tr class="text-muted">
+                        <td><span title="Phone currently not registered in network">📵</span> {{ number }}</td>
 {%   else %}
-                <tr>
-                    <td>{{ number }}</td>
+                    <tr>
+                        <td>{{ number }}</td>
 {%   endif %}
-                    <td>{{ name }}</td>
-                </tr>
+                        <td>{{ name }}</td>
+                    </tr>
 {%  endif %}
 {% endfor %}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
         </div>
+        <script type="text/javascript">
+            function search_the_table() {
+                input = document.getElementById("searchterm");
+                filter = input.value.toLowerCase();
+                table = document.getElementById("phonebook_table").getElementsByTagName("tbody")[0];
+                tr = table.getElementsByTagName("tr");
+
+                for (i = 0; i < tr.length; i++) {
+                    txtValue = tr[i].innerText;
+                    if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        </script>
     </body>
 </html>

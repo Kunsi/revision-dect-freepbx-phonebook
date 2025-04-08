@@ -18,3 +18,6 @@ platformdirs==4.3.7
 requests==2.32.3
 urllib3==2.3.0
 Werkzeug==3.1.3
+
+--extra-index-url https://git.cccv.de/api/v4/projects/220/packages/pypi/simple
+ldapserver==0.1.*

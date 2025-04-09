@@ -93,16 +93,16 @@ class OMMCrawler:
             user_extension = result.xpath("td[6]/text()")[0]
 
             user_subscribed = False
-            user_active = False
+            user_active = True # if user uses non-mitel phone, there will be no image in column 9
             try:
                 user_subscribed = result.xpath("td[8]/img/@alt")[0] == "yes"
-                user_active = result.xpath("td[9]/img/@alt")[0] == "yes"
+                user_active = result.xpath("td[9]/img/@alt")[0] != "info"
             except Exception:
                 pass
 
             data[str(user_extension)] = {
                 "name": user_name,
-                "is_active": user_active,
+                "is_active": user_active and user_subscribed,
                 "is_subscribed": user_subscribed,
             }
         return data

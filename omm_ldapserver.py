@@ -82,7 +82,9 @@ class UffdLDAPRequestHandler(ldapserver.LDAPRequestHandler):
 
         logging.info(f"Have {len(fpbx)} users in FreePBX and {len(omm)} users in OMM")
         for nbr, name in fpbx.items():
-            if omm.get(nbr, {}).get("is_active", True):
+            if omm.get(nbr, {}).get("is_subscribed", True):
+                if not omm.get(nbr, {}).get("is_active", True):
+                    name = f"📵 {name}"
                 logging.debug(f"{name=} {nbr=} {omm.get(nbr)=}")
                 yield template.create_entry(
                     nbr,

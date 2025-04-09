@@ -70,8 +70,8 @@ class UffdLDAPRequestHandler(ldapserver.LDAPRequestHandler):
             telephoneNumber=ldapserver.WILDCARD,
             # uidNumber=ldapserver.WILDCARD,
         )
-        # if not template.match_search(baseobj, scope, filterobj):
-        #    return
+        if not template.match_search(baseobj, scope, filterobj):
+            return
 
         try:
             omm = omm_pp_list()
@@ -79,10 +79,11 @@ class UffdLDAPRequestHandler(ldapserver.LDAPRequestHandler):
         except Exception as e:
             logging.exception("error while getting users")
             raise LDAPUnavailable(f"could not get users: {e!r}")
+
         logging.info(f"Have {len(fpbx)} users in FreePBX and {len(omm)} users in OMM")
         for nbr, name in fpbx.items():
             if omm.get(nbr, {}).get("is_active", True):
-                logging.info(f"User {name!r} with number {nbr} is active")
+                logging.debug(f"{name=} {nbr=} {omm.get(nbr)=}")
                 yield template.create_entry(
                     nbr,
                     cn=[name],

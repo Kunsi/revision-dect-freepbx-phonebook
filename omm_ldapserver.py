@@ -16,7 +16,7 @@ from phonebook.omm import omm_pp_list
 
 logging.basicConfig(level=logging.INFO)
 
-BASE_DN = "dc=revison"
+BASE_DN = "dc=revision"
 
 
 class UffdLDAPRequestHandler(ldapserver.LDAPRequestHandler):

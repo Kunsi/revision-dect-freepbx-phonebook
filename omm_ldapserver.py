@@ -5,9 +5,7 @@ import socketserver
 
 import ldapserver
 from ldapserver.exceptions import (
-    LDAPInsufficientAccessRights,
-    LDAPInvalidCredentials,
-    LDAPUnwillingToPerform,
+    LDAPUnavailable,
 )
 from ldapserver.schema import RFC2307BIS_SCHEMA, RFC2798_SCHEMA
 
@@ -69,13 +67,18 @@ class UffdLDAPRequestHandler(ldapserver.LDAPRequestHandler):
             # mail=ldapserver.WILDCARD,
             sn=[" "],
             uid=ldapserver.WILDCARD,
+            telephoneNumber=ldapserver.WILDCARD,
             # uidNumber=ldapserver.WILDCARD,
         )
         # if not template.match_search(baseobj, scope, filterobj):
         #    return
 
-        omm = omm_pp_list()
-        fpbx = freepbx_phonebook()
+        try:
+            omm = omm_pp_list()
+            fpbx = freepbx_phonebook()
+        except Exception as e:
+            logging.exception("error while getting users")
+            raise LDAPUnavailable(f"could not get users: {e!r}")
         logging.info(f"Have {len(fpbx)} users in FreePBX and {len(omm)} users in OMM")
         for nbr, name in fpbx.items():
             if omm.get(nbr, {}).get("is_active", True):
@@ -88,6 +91,7 @@ class UffdLDAPRequestHandler(ldapserver.LDAPRequestHandler):
                     # homeDirectory=[f"/home/{nbr}"],
                     # mail=[f"{nbr}@example.com"],
                     uid=[nbr],
+                    telephoneNumber=[nbr],
                     # uidNumber=[nbr],
                 )
 

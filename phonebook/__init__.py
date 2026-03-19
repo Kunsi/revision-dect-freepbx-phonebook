@@ -1,11 +1,20 @@
+from json import load as json_load
 from os import environ
+from os.path import abspath, dirname, join
 
 from flask import Flask, jsonify, render_template, request
 
-from .freepbx import freepbx_phonebook
-from .omm import omm_pp_list
-
 app = Flask("phonebook")
+
+
+def omm_pp_list():
+    with open(join(abspath(dirname(dirname(__file__))), "omm_pp.json")) as f:
+        return json_load(f)
+
+
+def freepbx_phonebook():
+    with open(join(abspath(dirname(dirname(__file__))), "freepbx.json")) as f:
+        return json_load(f)
 
 
 @app.route("/")

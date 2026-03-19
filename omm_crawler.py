@@ -11,7 +11,8 @@ import requests
 
 # Supress SSL certificate warnings for ssl_verify=False
 import urllib3
-from lxml import etree, html
+from lxml import html
+from urllib3.util import create_urllib3_context
 
 USERNAME_FIELD = "g2"
 PASSWORD_FIELD = "g3"
@@ -19,8 +20,6 @@ CRSF_FIELD = "password"
 
 PATH = abspath(dirname(__file__))
 
-
-from urllib3.util import create_urllib3_context
 
 ctx = create_urllib3_context()
 ctx.load_default_certs()
@@ -93,7 +92,9 @@ class OMMCrawler:
             user_extension = result.xpath("td[6]/text()")[0]
 
             user_subscribed = False
-            user_active = True # if user uses non-mitel phone, there will be no image in column 9
+            user_active = (
+                True  # if user uses non-mitel phone, there will be no image in column 9
+            )
             try:
                 user_subscribed = result.xpath("td[8]/img/@alt")[0] == "yes"
                 user_active = result.xpath("td[9]/img/@alt")[0] != "info"

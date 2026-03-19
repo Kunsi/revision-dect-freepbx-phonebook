@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from os import environ
-from os.path import abspath, dirname, join
+from os.path import abspath, dirname
 
 ROOT = dirname(abspath(__file__))
 

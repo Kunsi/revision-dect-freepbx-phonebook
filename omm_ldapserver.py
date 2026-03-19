@@ -2,17 +2,24 @@
 
 import logging
 import socketserver
+from json import load as json_load
+from os.path import abspath, dirname, join
 
 import ldapserver
-from ldapserver.exceptions import (
-    LDAPUnavailable,
-)
-from ldapserver.schema import RFC2307BIS_SCHEMA, RFC2798_SCHEMA
+from ldapserver.exceptions import LDAPUnavailable
 
-from phonebook.freepbx import freepbx_phonebook
-from phonebook.omm import omm_pp_list
 
-logging.basicConfig(level=logging.INFO)
+def omm_pp_list():
+    with open(join(abspath(dirname(__file__)), "omm_pp.json")) as f:
+        return json_load(f)
+
+
+def freepbx_phonebook():
+    with open(join(abspath(dirname(__file__)), "freepbx.json")) as f:
+        return json_load(f)
+
+
+logging.basicConfig(level=logging.DEBUG)
 
 BASE_DN = "dc=revision"
 

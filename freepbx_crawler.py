@@ -1,9 +1,16 @@
+#!/usr/bin/env python3
+
+from json import dump
 from os import environ
+from os.path import abspath, dirname, join
+from shutil import move
 
 import mariadb
 
+PATH = abspath(dirname(__file__))
 
-def freepbx_phonebook():
+
+def fetch_freepbx():
     db = mariadb.connect(
         user=environ["FREEPBX_DB_USER"],
         password=environ["FREEPBX_DB_PASS"],
@@ -27,3 +34,13 @@ def freepbx_phonebook():
             result[str(ext)] = name
 
     return result
+
+
+if __name__ == "__main__":
+    status = fetch_freepbx()
+    with open(join(PATH, "freepbx.json.tmp"), "w") as f:
+        dump(status, f)
+    move(
+        join(PATH, "freepbx.json.tmp"),
+        join(PATH, "freepbx.json"),
+    )

@@ -8,6 +8,11 @@
     <body>
         <div class="container">
             <h1 class="text-center">Phonebook</h1>
+{% if not force_display_all %}
+            <div class="alert alert-danger text-center" role="alert">
+                DECT Phones that aren't currently registered in the network are hidden. <a href="/?all">Click here to show all phones regardless of their status.</a>
+            </div>
+{% endif %}
             <p><input type="text" id="searchterm" onkeyup="search_the_table()" class="form-control" placeholder="Search ..."></p>
             <table class="table table-striped" id="phonebook_table">
                 <thead>

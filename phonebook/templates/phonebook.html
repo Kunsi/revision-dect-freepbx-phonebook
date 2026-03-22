@@ -8,12 +8,21 @@
     <body>
         <div class="container">
             <h1 class="text-center">Phonebook</h1>
-{% if not force_display_all %}
+{% if not force_display_all and not qr %}
             <div class="alert alert-danger text-center" role="alert">
                 DECT Phones that aren't currently registered in the network are hidden. <a href="/?all">Click here to show all phones regardless of their status.</a>
             </div>
 {% endif %}
+{%  if qr %}
+            <div class="text-center">
+                <p>
+                    <img src="{{ url_for("make_qrcode", url=qr) }}" style="height:200px;"><br>
+                    An always up-to date version of this phonebook can be found at <code>{{ qr }}</code>
+                </p>
+            </div>
+{%  else %}
             <p><input type="text" id="searchterm" onkeyup="search_the_table()" class="form-control" placeholder="Search ..."></p>
+{%  endif %}
             <table class="table table-striped" id="phonebook_table">
                 <thead>
                     <tr>
@@ -23,8 +32,8 @@
                 </thead>
                 <tbody>
 {% for number, name in fpbx.items()|sort %}
-{%  if omm.get(number, {}).get('is_subscribed', True) or force_display_all %}
-{%   if not omm.get(number, {}).get('is_active', True) %}
+{%  if omm.get(number, {}).get('is_subscribed', True) or force_display_all or qr %}
+{%   if not omm.get(number, {}).get('is_active', True) and not qr %}
                     <tr class="text-muted">
                         <td><span title="Phone currently not registered in network">📵</span> {{ number }}</td>
 {%   else %}

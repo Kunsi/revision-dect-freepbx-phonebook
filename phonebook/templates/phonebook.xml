@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AddressBook>
-{% for number, name in fpbx.items()|sort %}
+{% for item in phonebook %}
 {%  if omm.get(number, {}).get('is_subscribed', True) %}
     <Contact>
         <LastName></LastName>
-        <FirstName>{{ name }}</FirstName>
+        <FirstName>{{ item.name }}</FirstName>
         <Phone>
-            <phonenumber>{{ number }}</phonenumber>
+            <phonenumber>{{ item.number }}</phonenumber>
             <accountindex>1</accountindex>
         </Phone>
     </Contact>

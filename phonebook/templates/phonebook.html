@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>Phonebook</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
@@ -10,10 +10,10 @@
             <div class="d-print-none">
                 <h1 class="text-center">Phonebook</h1>
             </div>
-{% if not force_display_all and not qr %}
+{% if has_hidden_numbers and not qr %}
             <div class="alert alert-danger text-center" role="alert">
                 <p>
-                    DECT Phones that aren't currently registered in the network are hidden.
+                    DECT Phones that weren't registered in the network are hidden.
                     <a href="/?all">Click here to show all phones regardless of their status.</a>
                 </p>
             </div>
@@ -40,16 +40,16 @@
                     </tr>
                 </thead>
                 <tbody>
-{% for number, name in fpbx.items()|sort %}
-{%  if omm.get(number, {}).get('is_subscribed', True) or force_display_all or qr %}
-{%   if not omm.get(number, {}).get('is_active', True) and not qr %}
+{% for item in phonebook %}
+{%  if item.should_be_shown %}
+{%   if not item.is_active and not qr %}
                     <tr class="text-muted">
-                        <td><span title="Phone currently not registered in network">📵</span> {{ number }}</td>
+                        <td><span title="Phone currently not registered in network">📵</span> {{ item.number }}</td>
 {%   else %}
                     <tr>
-                        <td>{{ number }}</td>
+                        <td>{{ item.number }}</td>
 {%   endif %}
-                        <td>{{ name }}</td>
+                        <td>{{ item.name }}</td>
                     </tr>
 {%  endif %}
 {% endfor %}

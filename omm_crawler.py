@@ -8,7 +8,6 @@ from os.path import abspath, dirname, join
 from shutil import move
 
 import requests
-
 # Supress SSL certificate warnings for ssl_verify=False
 import urllib3
 from lxml import html

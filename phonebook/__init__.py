@@ -15,7 +15,7 @@ def _phonebook_as_list(force_display_all=False):
 
     result = []
 
-    for number, name in sorted(fpbx.items(), key=lambda x, y: int(x)):
+    for number, name in sorted(fpbx.items(), key=lambda x: int(x[0])):
         should_be_shown = force_display_all
         is_active = True
         omm_info = omm.get(number, {})

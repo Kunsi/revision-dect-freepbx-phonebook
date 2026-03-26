@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <AddressBook>
 {% for item in phonebook %}
-{%  if omm.get(number, {}).get('is_subscribed', True) %}
+{%  if item.should_be_shown %}
     <Contact>
         <LastName></LastName>
         <FirstName>{{ item.name }}</FirstName>

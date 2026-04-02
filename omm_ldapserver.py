@@ -88,7 +88,7 @@ class UffdLDAPRequestHandler(ldapserver.LDAPRequestHandler):
             raise LDAPUnavailable(f"could not get users: {e!r}")
 
         logging.info(f"Have {len(fpbx)} users in FreePBX and {len(omm)} users in OMM")
-        for nbr, name in fpbx.items():
+        for nbr, name in sorted(fpbx.items(), key=lambda x: x[1].lower()):
             if omm.get(nbr, {}).get("is_subscribed", True):
                 if not omm.get(nbr, {}).get("is_active", True):
                     name = f"[XX] {name}"
